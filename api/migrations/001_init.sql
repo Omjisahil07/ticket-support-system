@@ -27,42 +27,9 @@ create table ticket_pid_counters (
   updated_at timestamptz not null default now()
 );
 
-create or replace function next_ticket_pid()
-returns text
-language plpgsql
-as $$
-declare
-  current_year_month text := to_char(now(), 'YYYYMM');
-  next_counter integer;
-begin
-  loop
-    update ticket_pid_counters
-      set counter = counter + 1,
-          updated_at = now()
-    where year_month = current_year_month
-    returning counter into next_counter;
-
-    if found then
-      exit;
-    end if;
-
-    begin
-      insert into ticket_pid_counters (year_month, counter)
-      values (current_year_month, 1)
-      returning counter into next_counter;
-      exit;
-    exception when unique_violation then
-      -- Retry if another transaction inserted the row first.
-    end;
-  end loop;
-
-  return current_year_month || '-' || lpad(next_counter::text, 4, '0');
-end;
-$$;
-
 create table tickets (
   id uuid primary key default gen_random_uuid(),
-  pid text not null unique default next_ticket_pid(),
+  pid text not null unique,
   subject text not null,
   description text not null,
   status ticket_status not null default 'NEW',
@@ -84,12 +51,7 @@ create table ticket_messages (
   author_user_id uuid references users(id),
   body text not null,
   attachments jsonb not null default '[]',
-  created_at timestamptz not null default now(),
-  constraint ticket_messages_author_check
-    check (
-      (author_type = 'AGENT' and author_user_id is not null)
-      or (author_type = 'REQUESTER' and author_user_id is null)
-    )
+  created_at timestamptz not null default now()
 );
 
 create index ticket_messages_ticket_id_idx on ticket_messages(ticket_id);
