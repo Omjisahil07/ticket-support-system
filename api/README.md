@@ -1,5 +1,12 @@
 # API
 
-Backend HTTP API for authentication, tickets, and admin operations.
+Backend API service for the support desk.
 
-**Entry point:** `api/src/index.ts` (server bootstrap).
+## Local development
+
+1. Copy `.env.example` to `.env`.
+2. Install dependencies and run the API server.
+
+## Database
+
+SQL migrations live in `migrations/`.
