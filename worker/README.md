@@ -1,5 +1,8 @@
 # Worker
 
-Background job processor for async tasks (email delivery, retries).
+Background worker for async jobs (email delivery, retries).
 
-**Entry point:** `worker/src/worker.ts` (queue consumer bootstrap).
+## Local development
+
+1. Copy `.env.example` to `.env`.
+2. Install dependencies and run the worker.
