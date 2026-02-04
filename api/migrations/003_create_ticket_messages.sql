@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS ticket_messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   ticket_id UUID NOT NULL REFERENCES tickets(id) ON DELETE CASCADE,
-  sender_id UUID REFERENCES users(id) ON DELETE SET NULL,
-  message_type ticket_message_type NOT NULL DEFAULT 'PUBLIC',
+  author_type message_author_type NOT NULL,
+  author_user_id UUID REFERENCES users(id),
   body TEXT NOT NULL,
-  attachment_urls TEXT[] NOT NULL DEFAULT '{}',
+  attachments JSONB NOT NULL DEFAULT '[]'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
