@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN
-    CREATE TYPE user_role AS ENUM ('ADMIN', 'SUB_ADMIN', 'AGENT', 'CUSTOMER');
+    CREATE TYPE user_role AS ENUM ('ADMIN', 'SUB_ADMIN', 'AGENT');
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ticket_status') THEN
@@ -14,8 +14,8 @@ BEGIN
     CREATE TYPE ticket_priority AS ENUM ('LOW', 'MEDIUM', 'HIGH', 'URGENT');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ticket_message_type') THEN
-    CREATE TYPE ticket_message_type AS ENUM ('PUBLIC', 'INTERNAL');
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'message_author_type') THEN
+    CREATE TYPE message_author_type AS ENUM ('REQUESTER', 'AGENT');
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ticket_event_type') THEN
@@ -24,9 +24,7 @@ BEGIN
       'ASSIGNED',
       'STATUS_CHANGED',
       'PRIORITY_CHANGED',
-      'MESSAGE_ADDED',
-      'CUSTOMER_REPLIED',
-      'INTERNAL_NOTE'
+      'MESSAGE_ADDED'
     );
   END IF;
 END $$;
