@@ -63,6 +63,22 @@ worker/.env
 
 Use the same Supabase project for all local services.
 
+Example templates are available:
+
+```
+web/.env.local.example
+api/.env.example
+worker/.env.example
+```
+
+Copy the examples to create your local env files:
+
+```bash
+cp web/.env.local.example web/.env.local
+cp api/.env.example api/.env
+cp worker/.env.example worker/.env
+```
+
 ---
 
 ## 5. Database Implementation (First Priority)
